@@ -20,7 +20,7 @@ class StuGradeController extends AdminbaseController {
         $this->assign("page", $page->show('Admin'));
 
 
-        $sel = $this->model->field('cmf_subject.subject_name,cmf_grade.grade,cmf_subject.subject_id')
+        $sel = $this->model->field('cmf_subject.subject_name,cmf_grade.grade,cmf_subject.score')
             ->join('cmf_subject ON cmf_subject.subject_id = cmf_grade.subject_id')
             ->limit($page->firstRow , $page->listRows)
             ->where(array('cmf_grade.stu_id'=>$stu_id))
@@ -29,30 +29,30 @@ class StuGradeController extends AdminbaseController {
         foreach($sel as $k=>$v){
             $data[$k]['subject_name'] = $v['subject_name'];
             $data[$k]['grade'] = $v['grade'];
-            $subject[] = $v['subject_id'];
+            $data[$k]['score'] = $v['score'];
+            if($v['grade']<60){
+                $s = 0;
+            }elseif($v['grade']>=60 && $v['grade']<65){
+                $s = 1;
+            }elseif($v['grade']>=65 && $v['grade']<70){
+                $s = 1.5;
+            }elseif($v['grade']>=70 && $v['grade']<75){
+                $s = 2;
+            }elseif($v['grade']>=75 && $v['grade']<80){
+                $s = 2.5;
+            }elseif($v['grade']>=80 && $v['grade']<85){
+                $s = 3;
+            }elseif($v['grade']>=85 && $v['grade']<90){
+                $s = 3.5;
+            }elseif($v['grade']>=90 && $v['grade']<95){
+                $s = 4;
+            }elseif($v['grade']>=95 && $v['grade']<100){
+                $s = 4.5;
+            }elseif($v['grade']=100){
+                $s = 5;
+            }
+            $data[$k]['jidian'] = $s*$data[$k]['score'];
         }
-
-//        print_r($subject);die;
-        //排名
-//        $Student = M("Student");
-//        //获取班级
-//        $class_res = $Student->field('class_id')->where(array('stu_id'=>$stu_id))->find();
-//        $class = $class_res['class_id'];
-//        //班级所有学生
-//        $stu_all_res = $Student->field('stu_id')->where(array('class_id'=>$class))->select();
-//        foreach($stu_all_res as $v){
-//            $stu_all[] = $v['stu_id'];
-//        }
-////        print_r($stu_all);die;
-//        $c =count($subject);
-////        print_r($c);die;
-//        for($i=$subject[0];$i<=$subject[$c];$i++){
-//            $res = $this->model ->field()
-//                                ->where(array('subject_id'=>$i))
-//                                ->
-//        }
-
-
         $this->assign("data",$data);
         $this -> display();
     }

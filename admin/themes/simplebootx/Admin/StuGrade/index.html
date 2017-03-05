@@ -15,7 +15,7 @@
         <tr>
             <th style="width:400px;height:50px;" class="stu_msg">课程名称</th>
             <th style="width:150px;height:50px;" class="stu_msg">成绩</th>
-            <th style="width:100px;height:50px;" class="stu_msg">班内排名</th>
+            <th style="width:100px;height:50px;" class="stu_msg">绩点/学分</th>
         </tr>
         <foreach name="data" item="vo">
             <tr style="height:40px;">
@@ -26,8 +26,11 @@
                     <else />
                     <td>{$vo.grade}</td>
                 </if>
-
-                <td>{$vo.ranking}</td>
+                <if condition="$vo['jidian'] eq 0">
+                    <td><span style="color:orange;">{$vo.jidian}</span>/{$vo.score}</td>
+                    <else />
+                    <td>{$vo.jidian}/{$vo.score}</td>
+                </if>
             </tr>
 
         </foreach>
