@@ -2,13 +2,13 @@
 namespace Admin\Controller;
 use Common\Controller\AdminbaseController;
 
-class StuAddController extends AdminbaseController {
+class StuSyController extends AdminbaseController {
     protected $model;
     private $params;
 
     public function _initialize() {
         parent::_initialize();
-        $this->model = D('Add_point');
+        $this->model = D('Help');
         $this->params = I('params.');
     }
 
@@ -28,19 +28,17 @@ class StuAddController extends AdminbaseController {
         $page = $this->page($count, 8);
         $this->assign("page", $page->show('Admin'));
 
-
-        $Add_point_msg = M('Add_point_msg');
+        $Help_msg = M('Help_msg');
 
         $res = $this->model->limit($page->firstRow , $page->listRows)->where($where)->select();
         foreach($res as $k=>$v){
             $data[$k]['id'] = $v['id'];
             $data[$k]['type_name'] = $v['type_name'];
 
-            $sel = $Add_point_msg->field('point')->where(array('type_name'=>$v['type_name']))->find();
-            $data[$k]['point'] = $sel['point'];
+            $sel = $Help_msg->field('money')->where(array('type_name'=>$v['type_name']))->find();
+            $data[$k]['money'] = $sel['money'];
 
-            $data[$k]['add_res'] = $v['add_res'];
-            $data[$k]['add_note'] = $v['add_note'];
+            $data[$k]['sy_note'] = $v['sy_note'];
             $data[$k]['create_time'] = date("Y/m/d H:i",$v['create_time']);
             if($v['status'] == 0){
                 $data[$k]['status'] = '申请中';
@@ -53,13 +51,14 @@ class StuAddController extends AdminbaseController {
             }
 
         }
+
         $this->assign('data',$data);
         $this -> display();
     }
 
     public function add(){
-        $Add_point_msg = M("Add_point_msg");
-        $sel = $Add_point_msg->field('type_name')->select();
+        $Help_msg = M("Help_msg");
+        $sel = $Help_msg->field('type_name')->select();
         foreach ($sel as $v){
             $type[] = $v['type_name'];
         }
@@ -75,14 +74,11 @@ class StuAddController extends AdminbaseController {
         $data['create_time'] = time();
         $data['stu_id'] = $stu_id;
 
-        //处理时间
-        $data['start_time'] = strtotime($data['start_time']);
-        $data['end_time'] = strtotime($data['end_time']);
 
 //        print_r($data);die;
         if ($this->model->create($data)!==false) {
             if ($this->model->add()!==false) {
-                $this->success('提交成功!', U('StuAdd/add'));
+                $this->success('提交成功!', U('StuSy/index'));
             } else {
                 $this->error('提交失败!');
             }
@@ -95,7 +91,7 @@ class StuAddController extends AdminbaseController {
 
     public function remove_add(){
         //取消申请
-            $id = I("get.id",0,'intval');
+        $id = I("get.id",0,'intval');
         //判断状态是否为审批通过
         $status = $this->model->field('status')->where(array('id'=>$id))->find();
 

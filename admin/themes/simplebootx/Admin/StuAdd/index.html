@@ -21,6 +21,7 @@
             <thead>
             <tr>
                 <th width="150">加分项类型</th>
+                <th width="50">可加分数</th>
                 <th width="200">成果</th>
                 <th width="200">备注</th>
                 <th width="100">申请时间</th>
@@ -32,6 +33,7 @@
             <foreach name="data" item="vo">
                 <tr>
                     <td>{$vo.type_name}</td>
+                    <td>{$vo.point}</td>
                     <td>{$vo.add_res}</td>
                     <td>{$vo.add_note}</td>
                     <td>{$vo.create_time}</td>
@@ -49,15 +51,12 @@
             </foreach>
             </tbody>
             <!--<tfoot>-->
-            <!--<tr>-->
-                <!--<th width="200">{:L('NAME')}</th>-->
-                <!--<th width="200">{:L('WAY')}</th>-->
-                <!--<th width="100">{:L('STATUS')}</th>-->
-                <!--<th>{:L('START_TIME')}</th>-->
-                <!--<th>{:L('END_TIME')}</th>-->
-                <!--<th>{:L('UPDATE_TIME')}</th>-->
-                <!--<th width="200">{:L('ACTIONS')}</th>-->
-            <!--</tr>-->
+                <!--<th width="150">加分项类型</th>-->
+                <!--<th width="200">成果</th>-->
+                <!--<th width="200">备注</th>-->
+                <!--<th width="100">申请时间</th>-->
+                <!--<th width="80">状态</th>-->
+                <!--<th width="50">操作</th>-->
             <!--</tfoot>-->
         </table>
         <div class="pagination">{$page}</div>
